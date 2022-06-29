@@ -14,6 +14,7 @@ app.post('/', ({ body }, res) => {
         });
 });
 
+
 //Get all Users
 app.get('/', (req, res) => {
     User.find()
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
             res.json(err);
         });
 });
+
 
 //GET/PUT/DELETE USER ROUTES
 //Get a single user by ID
