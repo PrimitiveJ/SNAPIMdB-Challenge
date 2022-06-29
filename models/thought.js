@@ -63,7 +63,7 @@ const thoughtSchema = new Schema({
     })
 
 //Get Method for Date for Thought
-thoughtSchema.methods.formatDate = function() {
+function formatDate() {
     console.log(`The current date is ${this.createdAt}`)
 }
 
@@ -73,10 +73,6 @@ thoughtSchema.virtual('reactionCount').get(function() {
   });
   
 
-//Get Method for Date for Reaction
-reactionSchema.methods.formatDate = function() {
-    console.log(`The current date is ${this.createdAt}`)
-}
 const Thought = model('Thought', thoughtSchema);
 
 module.exports = Thought;
