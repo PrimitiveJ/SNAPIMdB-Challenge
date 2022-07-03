@@ -76,8 +76,8 @@ app.delete('/:userId/:thoughtId', ({ params }, res) => {
         });
 });
 
-//Create a reaction
-app.get('/:id', ({ params, body }, res) => {
+//Create a reaction using findOneAndUpdate method with ID/reactions as body and new:true
+app.post('/:id', ({ params, body }, res) => {
     Thought.findOneAndUpdate
     (
       { _id: params.id },

@@ -62,7 +62,7 @@ app.put('/:id', ({ params, body }, res) => {
 
 })
 
-//Delete a user
+//Delete a user using findOneAndDelete method
 app.delete('/:id', ({ params }, res) => {
     User.findOneAndDelete({ _id: params.id }).then(dbUserData => {
         if (!dbUserData) {
@@ -78,6 +78,7 @@ app.delete('/:id', ({ params }, res) => {
 
 //ADD FRIEND/REMOVE FRIEND ROUTES
 
+//Add a friend using id/friends/friendid
 app.post('/:id/friends/:friendId', ({ params }, res) => {
     User.findOneAndUpdate(
         { _id: params.userId },
@@ -98,6 +99,7 @@ app.post('/:id/friends/:friendId', ({ params }, res) => {
       });
 })
 
+//Delete a friend 
 app.delete('/:id/friends/:friendId', ({ params }, res) => {
     User.findOneAndUpdate(
         { _id: params.userId },
