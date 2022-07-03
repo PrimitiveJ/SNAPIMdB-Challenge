@@ -10,9 +10,6 @@ app.post('/', ({ body }, res) => {
         .then(dbUser => {
             res.json(dbUser);
         })
-        .catch(err => {
-            res.json(err);
-        });
 });
 
 //Get all Thoughts
@@ -24,9 +21,6 @@ app.get('/', (req, res) => {
         console.log(dbThoughtData);
         res.json(dbThoughtData)
     })
-    .catch(err => {
-        res.json(err);
-    });
 });
 
 
@@ -41,10 +35,6 @@ app.get('/:id', ({ params }, res) => {
         }
         res.json(dbThoughtData);
     })
-    .catch(err => {
-        console.log(err);
-        res.status(400).json(err)
-    })
 });
 
 //Update a thought
@@ -56,25 +46,27 @@ app.put('/:id', ({ params, body }, res) => {
             }
             res.json(dbThoughtData);
         })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json(err);
-        });
-})
+});
 
 //Delete a thought
 app.delete('/:userId/:thoughtId', ({ params }, res) => {
-    Thought.findOneAndDelete({ _id: params.id }).then(dbThoughtData => {
-            if (!dbThoughtData) {
-                return res.status(404).json({ message: 'No thoughts with this id!' });
-            }
-            res.json(dbThoughtData);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json(err);
-        });
-});
+    Thought.findOneAndDelete(
+        { _id: params.thoughtId },
+        { new: true, runValidators: true })
+        .then((dbThoughtData) => {
+          if (!dbThoughtData) {
+            res.status(404).json({
+              message: "No user found with this id!",
+            });
+            User.findOneAndUpdate(
+              { thoughts: params.thoughtId },
+              { $pull: { thoughts: params.thoughtId } },
+              { new: true }
+            )
+          }
+          
+        }).then(res.json("thought deleted"))
+    });
 
 //Create a reaction using findOneAndUpdate method with ID/reactions as body and new:true
 app.post('/:id', ({ params, body }, res) => {
@@ -92,7 +84,6 @@ app.post('/:id', ({ params, body }, res) => {
       }
       res.json(dbThoughtData);
     })
-    .catch(err => res.json(err));
   });
 
 // DELETE REACTIONS TO THOUGHTS
@@ -111,7 +102,6 @@ app.delete('/:userId/:thoughtId/:reactionId', ({ params }, res) => {
         return;
     }
         res.json(dbThoughtData)
-    .catch(err => res.json(err));
     })
 });
 

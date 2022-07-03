@@ -44,7 +44,7 @@ app.get('/:id', ({ params }, res) => {
         console.log(err);
         res.status(400).json(err)
     })
-})
+});
 
 //Update a user
 app.put('/:id', ({ params, body }, res) => {
@@ -60,7 +60,7 @@ app.put('/:id', ({ params, body }, res) => {
         res.status(500).json(err);
     });
 
-})
+});
 
 //Delete a user using findOneAndDelete method
 app.delete('/:id', ({ params }, res) => {
@@ -74,14 +74,14 @@ app.delete('/:id', ({ params }, res) => {
         console.log(err);
         res.status(500).json(err);
     });
-})
+});
 
 //ADD FRIEND/REMOVE FRIEND ROUTES
 
 //Add a friend using id/friends/friendid
 app.post('/:id/friends/:friendId', ({ params }, res) => {
     User.findOneAndUpdate(
-        { _id: params.userId },
+        { _id: params.id },
         { $push: { friends: params.friendId } },
         { new: true }
       )
@@ -97,12 +97,12 @@ app.post('/:id/friends/:friendId', ({ params }, res) => {
         console.log(err);
         res.status(400).json(err);
       });
-})
+});
 
 //Delete a friend 
 app.delete('/:id/friends/:friendId', ({ params }, res) => {
     User.findOneAndUpdate(
-        { _id: params.userId },
+        { _id: params.id },
         { $pull: { friends: params.friendId } },
         { new: true }
       )
@@ -118,6 +118,6 @@ app.delete('/:id/friends/:friendId', ({ params }, res) => {
         console.log(err);
         res.status(400).json(err);
       });
-})
+});
 
 module.exports = app
